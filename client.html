@@ -1,0 +1,37 @@
+<!doctype html> 
+<html lang="en"> 
+ <head> 
+  <meta charset="utf-8">
+		<title>WebSockets Example</title>
+    <script src="jquery-1.4.2.min.js"></script>
+		<script src="twitter-text.js"></script>
+    <script>
+      $(document).ready(function(){
+      	ws = new WebSocket("ws://127.0.0.1:8080/websocket");
+        ws.onmessage = function(evt) { 
+					tweet = $.parseJSON(evt.data)
+					$("<p>"+tweet.user.screen_name+' posted: '+TwitterText.auto_link(tweet.text)+"</p>").prependTo("#msg").slideDown('slow');
+				};
+        ws.onclose = function() { $("#debug").append("socket closed"); };
+        ws.onopen = function() { $("#debug").append("socket connected"); };
+      });
+    </script>
+		<style> 
+		 { margin: 0; padding: 0; }
+	   html { font:1em/1.2 Arial, sans-serif }
+	   body { margin:1em auto; background: #ccc; width: 940px; }
+	   h1 { margin:1em 0; font-size:1.5em }
+	   a { color: blue }
+		 p { background: #fff; padding: 5px; }
+	   a:visited { text-decoration: none; }
+	   a:hover { color: #fff; background: blue; }
+		 #debug { position: absolute; }
+	  </style>
+  </head>
+  <body>
+		<h1>WebSockets</h1>
+    <div id="msg">
+    	<p id="debug"></p>
+    </div>
+  </body>
+</html>
